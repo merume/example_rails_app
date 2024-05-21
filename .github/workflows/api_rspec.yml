@@ -9,7 +9,7 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    timuout-minutes: 10
+    timeout-minutes: 10
     services:
       mysql:
         image: mysql:8.0
