@@ -6,7 +6,7 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     services:
       mysql:
         image: mysql:8.0
@@ -14,9 +14,6 @@ jobs:
           - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: "${{ secrets.MYSQL_PASSWORD }}"
-    defaults:
-      run:
-        working-directory: api
 
     steps:
     - name: Checkout code
@@ -24,11 +21,13 @@ jobs:
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
+      working-directory: api
       with:
         ruby-version: '3.2.2'
         bundler-cache: true
 
     - name: Initialize Database
+      working-directory: api
       run: |
         bundle exec rails db:create RAILS_ENV=test
         bundle exec rails db_migration:apply RAILS_ENV=test
