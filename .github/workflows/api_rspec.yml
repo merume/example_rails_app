@@ -24,13 +24,9 @@ jobs:
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
+        working-directory: api
         ruby-version: '3.2.2'
         bundler-cache: true
-
-    - name: Bundle install
-      working-directory: api
-      run: |
-        bundle install
 
     - name: Initialize Database
       working-directory: api
@@ -40,4 +36,4 @@ jobs:
 
     - name: Run RSpec
       working-directory: api
-      run: bundle exexc rspec
+      run: bundle exec rspec
