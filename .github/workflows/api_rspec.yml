@@ -21,10 +21,14 @@ jobs:
 
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
-      working-directory: api
       with:
         ruby-version: '3.2.2'
         bundler-cache: true
+
+    - name: Bundle install
+      working-directory: api
+      run: |
+        bundle install
 
     - name: Initialize Database
       working-directory: api
@@ -33,4 +37,5 @@ jobs:
         bundle exec rails db_migration:apply RAILS_ENV=test
 
     - name: Run RSpec
+      working-directory: api
       run: bundle exexc rspec
