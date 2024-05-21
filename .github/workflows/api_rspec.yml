@@ -1,0 +1,40 @@
+name: Run RSpec
+on:
+  push:
+    paths:
+      - 'api/**'
+  pull_request:
+    branches:
+      - master
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    timuout-minutes: 10
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: "${{ secrets.MYSQL_PASSWORD }}"
+    defaults:
+      run:
+        working-directory: api
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.2'
+        bundler-cache: true
+
+    - name: Initialize Database
+      run: |
+        bundle exec rails db:create RAILS_ENV=test
+        bundle exec rails db_migration:apply RAILS_ENV=test
+
+    - name: Run RSpec
+      run: bundle exexc rspec
