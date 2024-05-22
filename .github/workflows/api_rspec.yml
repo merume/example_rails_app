@@ -1,0 +1,40 @@
+name: Run RSpec
+on:
+  push:
+    paths:
+      - 'api/**'
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      MYSQL_HOST: 127.0.0.1
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: "${{ secrets.MYSQL_PASSWORD }}"
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        working-directory: api
+        ruby-version: '3.2.2'
+        bundler-cache: true
+    - name: Initialize Database
+      working-directory: api
+      run: |
+        bundle exec rails db:create RAILS_ENV=test
+        bundle exec rails db_migration:apply RAILS_ENV=test
+    - name: Run RSpec
+      working-directory: api
+      run: bundle exec rspec
