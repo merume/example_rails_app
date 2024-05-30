@@ -1,7 +1,7 @@
 class Api::V1::AuthorsController < ApplicationController
   def index
-    authors = Author.all
-    render json: { data: authors.map { |author| 
+    authors = Author.includes(:books).all
+    render json: authors.map { |author| 
           {
             id: author.id,
             name: author.name,
@@ -13,6 +13,5 @@ class Api::V1::AuthorsController < ApplicationController
             }
           }
         } 
-      }
   end
 end
