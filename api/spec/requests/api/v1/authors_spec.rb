@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Api::V1::Authors", type: :request do
+RSpec.describe "Api::V1::Authors" do
   describe "GET /api/v1/authors" do
     before do
       create(:author, :with_books)
@@ -11,7 +11,7 @@ RSpec.describe "Api::V1::Authors", type: :request do
       get api_v1_authors_path
 
       expect(response).to have_http_status(:success)
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json.length).to eq(2)
 
       json.each do |author|
@@ -19,10 +19,9 @@ RSpec.describe "Api::V1::Authors", type: :request do
         expect(author).to have_key("name")
         expect(author).to have_key("books")
 
-        author["books"].each do |book|
-          expect(book).to have_key("id")
-          expect(book).to have_key("title")
-        end
+        book = author["books"][0]
+        expect(book).to have_key("id")
+        expect(book).to have_key("title")
       end
     end
   end

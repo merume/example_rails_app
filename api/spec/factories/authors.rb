@@ -4,7 +4,7 @@ FactoryBot.define do
 
     trait :with_books do
       after(:create) do |author|
-        create_list(:book, 3, author: author)
+        create_list(:book, 3, author:)
       end
     end
   end
