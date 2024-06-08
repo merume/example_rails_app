@@ -9,7 +9,7 @@ namespace :db_migration do
   def run(*options)
     config = 'config/database.yml'
     schema = 'db/schemas/Schemafile'
-    rails_env   = ENV['RAILS_ENV'] || Rails.env
+    rails_env = ENV['RAILS_ENV'] || Rails.env
 
     command = "bundle exec ridgepole --config #{config} --env #{rails_env} --file #{schema}"
     command = [command, *options].join(' ')

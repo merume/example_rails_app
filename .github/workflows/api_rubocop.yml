@@ -1,0 +1,21 @@
+name: Run RuboCop
+on:
+  push:
+    paths:
+      - 'api/**'
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        working-directory: api
+        ruby-version: '3.2.2'
+        bundler-cache: true
+    - name: Run RuboCop
+      working-directory: api
+      run: bundle exec rubocop
