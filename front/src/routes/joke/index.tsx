@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { routeLoader$, Form, routeAction$ } from "@builder.io/qwik-city";
 
 export const useDadJoke = routeLoader$(async () => {
   const response = await fetch('https://icanhazdadjoke.com/', {
@@ -12,11 +12,25 @@ export const useDadJoke = routeLoader$(async () => {
   };
 });
 
+export const useJokeVoteAction = routeAction$((props) => {
+  console.log('VOTE', props)
+});
+
 export default component$(() => {
   const dadJokeSignal = useDadJoke();
+  const favoriteJokeAction = useJokeVoteAction();
   return (
     <section class="section bright">
       <p>{dadJokeSignal.value.joke}</p>
+      <Form>
+        <input type="hidden" name="JokeID" value={dadJokeSignal.value.id} />
+        <button name="vote" value="up">
+        👍
+        </button>
+        <button name="vote" value="down">
+        👎
+        </button>
+      </Form>
     </section>
   );
 });
