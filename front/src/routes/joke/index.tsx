@@ -13,7 +13,7 @@ export const useDadJoke = routeLoader$(async () => {
 });
 
 export const useJokeVoteAction = routeAction$((props) => {
-  console.log('VOTE', props)
+  console.log('VOTE', props);
 });
 
 export default component$(() => {
@@ -22,13 +22,13 @@ export default component$(() => {
   return (
     <section class="section bright">
       <p>{dadJokeSignal.value.joke}</p>
-      <Form>
+      <Form action={favoriteJokeAction}>
         <input type="hidden" name="JokeID" value={dadJokeSignal.value.id} />
         <button name="vote" value="up">
-        👍
+          👍
         </button>
         <button name="vote" value="down">
-        👎
+          👎
         </button>
       </Form>
     </section>
