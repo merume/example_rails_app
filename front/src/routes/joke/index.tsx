@@ -1,9 +1,16 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import {
+  component$,
+  useSignal,
+  useStylesScoped$,
+  useTask$
+} from "@builder.io/qwik";
 import {
   routeLoader$,
   Form,
   routeAction$,
-  server$ } from "@builder.io/qwik-city";
+  server$
+} from "@builder.io/qwik-city";
+import styles from "./index.css?inline";
 
 export const useDadJoke = routeLoader$(async () => {
   const response = await fetch('https://icanhazdadjoke.com/', {
@@ -21,6 +28,7 @@ export const useJokeVoteAction = routeAction$((props) => {
 });
 
 export default component$(() => {
+  useStylesScoped$(styles);
   const isFavoriteSignal = useSignal(false);
   const dadJokeSignal = useDadJoke();
   const favoriteJokeAction = useJokeVoteAction();
